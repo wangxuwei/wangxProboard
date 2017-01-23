@@ -1,0 +1,168 @@
+{
+  "symbols": [
+    {
+      "name": "ico-add",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-ascending",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-box-checked",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-box",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-calendar",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-check-on",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-check",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-chevron-down",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-chevron-left",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-chevron-right",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-chevron-up",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-close-x",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-copy",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-critical-red",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-crumb-left",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-crumb-right",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-dashboard",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-data",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-delete",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-descending",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-edit",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-export",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-group",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-hamburger",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-help",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-mobility",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-nodes",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-notification",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-objectives",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-ok-circle",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-pd",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-preview",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-radio-on",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-radio",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-search",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-settings",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-tasks",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-triangle-down",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-triangle-left",
+      "viewBox": "0 0 16 16"
+    },
+    {
+      "name": "ico-user",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "name": "ico-warning",
+      "viewBox": "0 0 24 24"
+    }
+  ]
+}

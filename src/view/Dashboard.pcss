@@ -1,0 +1,150 @@
+@import "../pcss/utils.pcss";
+
+.Dashboard{
+	flex: 1;
+	height: 100%;
+	display: flex; /* We start the flex box at the body */
+	flex-direction: column;
+
+	&-header{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		height: 72px;
+		.title{
+			font-size: 24px;
+			font-weight: 200;
+			margin: 16px 24px;
+			color: $txt;
+		}
+		.right-btns{
+			margin: 16px 24px;
+
+		}
+	}
+
+	&-content{
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		.table{
+			flex: 1;
+			height: 100%;
+			background: white;
+			margin: 0 24px 24px 24px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, .45);
+			padding:8px;
+			display: flex;
+			flex-direction: column;
+			.row{
+				border-bottom: 1px solid $bdr;
+				height: 32px;
+				display: flex;
+				flex-direction: row;
+			}
+			.cell{
+				font-size: 13px;
+				color: $txt;
+				font-weight: normal;
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+			}
+			&-header{
+				min-height: 32px;
+				.cell{
+					font-weight: bold;
+				}
+			}
+			&-content{
+				flex: 1;
+			}
+			.row{
+				&.row-add{
+					border-bottom: none;
+					height: 40px;
+					.icon{
+						margin-right: 8px;
+					}
+					input{
+						height: 24px;
+						border: 1px solid $bdr;
+						width: 200px;
+						border-radius: 4px;
+						padding: 2px 8px;
+					}
+				}
+			}
+			.cell{
+				&.feature{
+					justify-content: flex-start;
+					flex: 1;
+					padding-left: 8px;
+				}
+				&.requirement{
+					width: 144px;
+				}
+				&.funcitonal{
+					width: 192px;
+				}
+				&.visual{
+					width: 160px;
+				}
+				&.spec{
+					width: 96px;
+				}
+				&.api{
+					width: 64px;
+				}
+				&.impl{
+					width: 144px;
+					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+				}
+				.edit{
+					font-weight: normal;
+					margin: 0 16px;
+				}
+				.secondary{
+					margin-left: 24px;
+				}
+			}
+			.empty-edit-cell{
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				height: 100%;
+				width: 100%;
+				border-left: 1px dashed $bdr;
+				border-right: 1px dashed $bdr;
+			}
+			.progress-bar{
+				height: 100%;
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				.bar{
+					@mixin fitparent;
+					z-index: 1;
+					width: 100%;
+					background: #f96e86;
+				}
+				.txt{
+					position: relative;
+					z-index: 2;
+					font-size: 12px;
+				}
+				&.done{
+					.bar{
+						background: #9fe95c;
+					}
+				}
+			}
+		}
+	}
+}
