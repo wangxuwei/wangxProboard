@@ -39,12 +39,12 @@
 </script>
 
 <script type="text/html" id="Dashboard-table-row-item">
-	<div class="row">
-		<div class="cell feature">
+	<div class="row" data-entity="Feature" data-entity-id="{{id}}">
+		<div class="cell feature" data-editable data-prop="Feature.name">
 			{{#if parentId}}
-				<span class="secondary">{{name}}</span>
+				<span class="secondary name">{{name}}</span>
 			{{else}}
-				{{name}}
+				<span class="name">{{name}}</span>
 			{{/if}}
 		</div>
 		<div class="cell requirement">

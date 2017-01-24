@@ -42,7 +42,6 @@ function refreshLists(){
 	var conEl = d.first(view.el, ".table-content .rows-con");
 	d.empty(conEl);
 	ds.list("Feature").then(function(features){
-		console.log(features);
 		features = features || [];
 		for(var i = 0; i < features.length; i++){
 			var item = features[i];
