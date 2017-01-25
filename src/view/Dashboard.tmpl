@@ -12,6 +12,7 @@
 		<div class="table">
 			<div class="table-header">
 				<div class="row">
+					<div class="cell drag-col"></div>
 					<div class="cell feature">Feature <a class="edit">edit</a></div>
 					<div class="cell requirement">Requirement</div>
 					<div class="cell funcitonal">Functional-Design</div>
@@ -39,13 +40,12 @@
 </script>
 
 <script type="text/html" id="Dashboard-table-row-item">
-	<div class="row" data-entity="Feature" data-entity-id="{{id}}">
+	<div class="row {{#if parentId}}secondary{{/if}}" data-entity="Feature" data-entity-id="{{id}}" data-parent-id="{{parentId}}">
+		<div class="cell drag-col">
+			{{{i "ico-hamburger" "small"}}}
+		</div>
 		<div class="cell feature" data-editable data-prop="Feature.name">
-			{{#if parentId}}
-				<span class="secondary name">{{name}}</span>
-			{{else}}
-				<span class="name">{{name}}</span>
-			{{/if}}
+			<span class="name">{{name}}</span>
 		</div>
 		<div class="cell requirement">
 			<div class="progress-bar {{#check totalRequirementProgress '===' 100}}done{{/check}}">

@@ -61,6 +61,17 @@
 			&-content{
 				flex: 1;
 			}
+
+			&.drag-edit-mode{
+				user-select: none;
+				.row{
+					.cell{
+						&.drag-col{
+							display: flex;
+						}
+					}
+				}
+			}
 			.row{
 				&.row-add{
 					border-bottom: none;
@@ -76,12 +87,36 @@
 						padding: 2px 8px;
 					}
 				}
+				&.secondary{
+					.name{
+						margin-left: 24px;
+					}
+				}
+				&.drag-item{
+					opacity: 0;
+					position: fixed;
+					left: 0;
+					top: 0;
+					border-top: 1px solid $bdr;
+					z-index: 100;
+				}
+				&.drag-holder{
+					opacity: .5;
+				}
 			}
 			.cell{
+				&.drag-col{
+					display: none;
+					width: 32px;
+					justify-content: flex-start;
+				}
 				&.feature{
 					justify-content: flex-start;
 					flex: 1;
-					padding-left: 8px;
+					.icon{
+						display: none;
+						margin-right: 8px;
+					}
 				}
 				&.requirement{
 					width: 144px;
@@ -108,9 +143,6 @@
 					font-weight: normal;
 					margin: 0 16px;
 					cursor: pointer;
-				}
-				.secondary{
-					margin-left: 24px;
 				}
 			}
 			.empty-edit-cell{
