@@ -72,6 +72,21 @@
 					}
 				}
 			}
+			&.edit-mode{
+				.cell:empty{
+					&:after{
+						content: "edit";
+						text-align: center;
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						height: 100%;
+						width: 100%;
+						border-left: 1px dashed $bdr;
+						border-right: 1px dashed $bdr;
+					}
+				}
+			}
 			.row{
 				&.row-add{
 					border-bottom: none;
@@ -144,16 +159,9 @@
 					margin: 0 16px;
 					cursor: pointer;
 				}
-			}
-			.empty-edit-cell{
-				text-align: center;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				height: 100%;
-				width: 100%;
-				border-left: 1px dashed $bdr;
-				border-right: 1px dashed $bdr;
+				input{
+					width: 100%;
+				}
 			}
 			.progress-bar{
 				height: 100%;

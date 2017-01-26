@@ -43,6 +43,27 @@ d.register("Dashboard",{
 			}
 		},
 
+		"click; .table-header .row .cell.impl .edit": function(evt){
+			var view = this;
+			var targetEl = evt.target;
+			var tableEl = d.closest(targetEl, ".table");
+			if(targetEl.classList.contains("active")){
+				targetEl.classList.remove("active");
+				targetEl.innerHTML = "edit";
+				tableEl.classList.remove("edit-mode");
+				d.all(view.el, ".rows-con [data-prop]").forEach(function(propEl){
+					propEl.removeAttribute("data-editable");
+				});
+			}else{
+				targetEl.classList.add("active");
+				targetEl.innerHTML = "view";
+				tableEl.classList.add("edit-mode");
+				d.all(view.el, ".rows-con [data-prop]").forEach(function(propEl){
+					propEl.setAttribute("data-editable", "");
+				});
+			}
+		},
+
 		"mousedown; .row .drag-col .icon": function(evt){
 			var view = this;
 			var targetEl = evt.target;
@@ -91,8 +112,14 @@ d.register("Dashboard",{
 							view._dragHolder.classList.add("secondary");
 						}else{
 							if(evt.pageX - rowOffset.left > 24){
-								view._dragItem.classList.add("secondary");
-								view._dragHolder.classList.add("secondary");
+								var prevRow = d.prev(view._dragHolder, ".row:not(.secondary)");
+								if(prevRow){
+									view._dragItem.classList.add("secondary");
+									view._dragHolder.classList.add("secondary");
+								}else{
+									view._dragItem.classList.remove("secondary");
+									view._dragHolder.classList.remove("secondary");
+								}
 							}else{
 								view._dragItem.classList.remove("secondary");
 								view._dragHolder.classList.remove("secondary");
@@ -108,10 +135,22 @@ d.register("Dashboard",{
 			var view = this;
 			if(view._dragItem){
 				d.remove(view._dragItem);
-				view._dragHolder.classList.remove("drag-holder");
 				view._dragItem = null;
+
+				if(view._dragHolder.classList.contains("secondary")){
+					var parentRow = d.prev(view._dragHolder, ".row:not(.secondary)");
+					if(parentRow){
+						view._dragHolder.setAttribute("data-parent-id", parentRow.getAttribute("data-entity-id"));
+					}else{
+						view._dragHolder.setAttribute("data-parent-id", "");
+					}
+				}else{
+					view._dragHolder.setAttribute("data-parent-id", "");
+				}
+
+				view._dragHolder.classList.remove("drag-holder");
 				view._dragHolder = null;
-				// TODO: save the order
+				saveOrders.call(view);
 			}
 		}
 	},
@@ -126,7 +165,8 @@ d.register("Dashboard",{
 
 function refreshLists(){
 	var view = this;
-	var conEl = d.first(view.el, ".table-content .rows-con");
+	var tableEl = d.first(view.el, ".table");
+	var conEl = d.first(tableEl, ".table-content .rows-con");
 	d.empty(conEl);
 	ds.get("Feature").getFeaturesByRank().then(function(features){
 		features = features || [];
@@ -137,5 +177,24 @@ function refreshLists(){
 			var html = render("Dashboard-table-row-item", item);
 			conEl.appendChild(app.elFrom(html));
 		}
+
+		if(tableEl.classList.contains("edit-mode")){
+			d.all(conEl, "[data-prop]").forEach(function(propEl){
+				propEl.setAttribute("data-editable", "");
+			});
+		}
 	});	
+}
+
+function saveOrders(){
+	var view = this;
+	var features = [];
+	d.all(view.el, ".rows-con .row").forEach(function(row){
+		var obj = utils.entityRef(row, "Feature");
+		delete obj.type;
+		obj.parentId = row.getAttribute("data-parent-id");
+		obj.parentId = obj.parentId ? obj.parentId * 1 : null;
+		features.push(obj);
+	});
+	ds.get("Feature").reorderFeatures(features);
 }

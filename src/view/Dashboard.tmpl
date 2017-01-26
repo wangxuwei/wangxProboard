@@ -44,7 +44,7 @@
 		<div class="cell drag-col">
 			{{{i "ico-hamburger" "small"}}}
 		</div>
-		<div class="cell feature" data-editable data-prop="Feature.name">
+		<div class="cell feature" data-prop="Feature.name">
 			<span class="name">{{name}}</span>
 		</div>
 		<div class="cell requirement">
@@ -59,16 +59,9 @@
 				<div class="txt">{{totalFunctionalProgress}}%</div>
 			</div>
 		</div>
-		<div class="cell visual">
-			{{#if edit}}
-				<div class="empty-edit-cell">
-					edit
-				</div>
-			{{/if}}
-		</div>
-		<div class="cell spec"></div>
-		<div class="cell api"></div>
-		<div class="cell impl">
-		</div>
+		<div class="cell visual" data-prop="Feature.visual">{{visual}}</div>
+		<div class="cell spec" data-prop="Feature.spec">{{spec}}</div>
+		<div class="cell api" data-prop="Feature.api">{{api}}</div>
+		<div class="cell impl" data-prop="Feature.impl">{{impl}}</div>
 	</div>
 </script>
