@@ -22,7 +22,7 @@ d.register("Dashboard",{
 			// enter
 			if (evt.which === 13){
 				var val = inputEl.value;
-				ds.create("Feature",{name: val}).then(function(){
+				ds.get("Feature").create({name: val}).then(function(){
 					inputEl.value = "";
 				});
 			}
@@ -128,7 +128,7 @@ function refreshLists(){
 	var view = this;
 	var conEl = d.first(view.el, ".table-content .rows-con");
 	d.empty(conEl);
-	ds.list("Feature").then(function(features){
+	ds.get("Feature").getFeaturesByRank().then(function(features){
 		features = features || [];
 		for(var i = 0; i < features.length; i++){
 			var item = features[i];

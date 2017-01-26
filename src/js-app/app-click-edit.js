@@ -104,7 +104,7 @@ var ds = require("./ds.js");
 		if (entityInfo){
 			var vals = {};
 			vals[propInfo.name] = propInfo.value;
-			ds.update(entityInfo.type, entityInfo.id, vals);
+			ds.get(entityInfo.type).update(entityInfo.id, vals);
 		}else{
 			console.log("WARNING: no parent " + propInfo.type + " element for", event.target);
 		}
