@@ -1,4 +1,4 @@
-
+var render = require("../js-app/render.js").render;
 
 Handlebars.registerHelper('echo', function (cond, val) {
 	return (cond)?val:"";
@@ -52,4 +52,14 @@ Handlebars.registerHelper('check', function (lvalue, operator, rvalue, options) 
 		return options.inverse(this);
 	}
 
+});
+
+// we can use like this {{{incl "tmpl-test" data ...}}}
+Handlebars.registerHelper("incl", function(template, data, options) {
+	var params = Array.prototype.slice.call(arguments, 1, arguments.length - 1);
+	if(params.length == 1){
+		params = params[0];
+	}
+	var html = render(template, params);
+	return html;
 });

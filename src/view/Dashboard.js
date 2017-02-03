@@ -51,14 +51,14 @@ d.register("Dashboard",{
 				targetEl.classList.remove("active");
 				targetEl.innerHTML = "edit";
 				tableEl.classList.remove("edit-mode");
-				d.all(view.el, ".rows-con [data-prop]").forEach(function(propEl){
+				d.all(view.el, ".rows-con [data-prop]:not(.progress-cell)").forEach(function(propEl){
 					propEl.removeAttribute("data-editable");
 				});
 			}else{
 				targetEl.classList.add("active");
 				targetEl.innerHTML = "view";
 				tableEl.classList.add("edit-mode");
-				d.all(view.el, ".rows-con [data-prop]").forEach(function(propEl){
+				d.all(view.el, ".rows-con [data-prop]:not(.progress-cell)").forEach(function(propEl){
 					propEl.setAttribute("data-editable", "");
 				});
 			}
@@ -81,76 +81,171 @@ d.register("Dashboard",{
 			view._dragItem.style.left = evt.pageX + "px";
 			view._dragItem.style.top = evt.pageY + "px";
 			view._dragItem.style.opacity = .5;
+		},
+
+		"mousedown; .row .slide-valve": function(evt){
+			var view = this;
+			var targetEl = evt.target;
+			view._dragItem = targetEl;
+			view._lastPageX = evt.pageX;
+			view._currentBarWidth = d.closest(targetEl, ".slide-con").clientWidth;
+
+			// set init value
+			view._startValue = app.elAbsOffset(view._dragItem).left + view._dragItem.clientWidth / 2 - app.elAbsOffset(d.closest(targetEl, ".slide-con")).left;
+		},
+
+		"keyup; .slide-bar input": function(evt){
+			var view = this;
+			var inputEl = evt.target;
+			var slideBarEl = d.closest(inputEl, ".slide-bar");
+			
+			// enter
+			if (evt.which === 13){
+				var val = inputEl.value;
+				if(!val){
+					val = 0;
+				}
+
+				setPosition.call(view, slideBarEl, val);
+			}
+		},
+
+		// show slide bar
+		"click; .table.edit-mode .progress-bar": function(evt){
+			var view = this;
+			var progressBarEl = d.closest(evt.target, ".progress-bar");
+			var cellEl = d.closest(progressBarEl, ".cell");
+			var value  = progressBarEl.getAttribute("data-progress") * 1;
+			value = isNaN(value) ? 0 : value;
+
+			var slideBarEl = app.elFrom(render("Dashboard-slide-bar"));
+			setPosition.call(view, slideBarEl, value);
+
+			d.empty(cellEl);
+			cellEl.appendChild(slideBarEl);
+			cellEl.classList.add("init-slide-cell");
 		}
 	}, 
 
 	docEvents: {
+		"click": function(evt){
+			var view = this;
+			var targetEl = evt.target;
+			var currentProgressCell = d.closest(targetEl, ".cell.progress-cell");
+
+			d.all(view.el, ".cell.progress-cell").forEach(function(cellEl){
+				if(!currentProgressCell || currentProgressCell != cellEl){
+					var slideBarEl = d.first(cellEl, ".slide-bar");
+					// FIXME stopPropagation can not work
+					if(!cellEl.classList.contains("init-slide-cell")){
+						if(slideBarEl){
+							d.empty(cellEl);
+							var value  = d.first(slideBarEl, "input").value * 1;
+							value = isNaN(value) ? 0 : value;
+							var progressBarEl = app.elFrom(render("Dashboard-progress-bar", value));
+							cellEl.appendChild(progressBarEl);
+
+							var propInfo = getPropInfo(cellEl);
+							propInfo.value = value;
+							var entityInfo = utils.entityRef(cellEl, propInfo.type);
+							if (entityInfo){
+								var vals = {};
+								vals[propInfo.name] = propInfo.value;
+								ds.get(entityInfo.type).update(entityInfo.id, vals);
+							}
+						}
+					}
+					cellEl.classList.remove("init-slide-cell");
+				}
+			});
+		},
 		"mousemove": function(evt){
 			var view = this;
 			if(view._dragItem){
-				view._dragItem.style.left = evt.pageX + "px";
-				view._dragItem.style.top = evt.pageY + "px";
 
-				var rowsConEl = d.closest(view._dragItem, ".rows-con");
-				var rows = d.all(rowsConEl, ".row:not(.drag-item):not(.drag-holder)");
-				for(var i = 0; i < rows.length; i++){
-					var row = rows[i];
-					var rowOffset = app.elAbsOffset(row);
-					if(evt.pageX > rowOffset.left && evt.pageY > rowOffset.top && evt.pageX < rowOffset.left + row.clientWidth && evt.pageY < rowOffset.top + row.clientHeight){
-						if(evt.pageY > rowOffset.top + row.clientHeight / 2){
-							rowsConEl.insertBefore(view._dragHolder, row);
-							rowsConEl.insertBefore(row, view._dragHolder);
-						}else{
-							rowsConEl.insertBefore(view._dragHolder, row);
-						}
+				// for table rows
+				if(view._dragItem.classList.contains("row")){
+					view._dragItem.style.left = evt.pageX + "px";
+					view._dragItem.style.top = evt.pageY + "px";
 
-						var dargNameEl = d.first(view._dragItem, ".name");
-						var holderNameEl = d.first(view._dragHolder, ".name");
-						var parentId = row.getAttribute("data-parent-id");
-						if(parentId){
-							view._dragItem.classList.add("secondary");
-							view._dragHolder.classList.add("secondary");
-						}else{
-							if(evt.pageX - rowOffset.left > 24){
-								var prevRow = d.prev(view._dragHolder, ".row:not(.secondary)");
-								if(prevRow){
-									view._dragItem.classList.add("secondary");
-									view._dragHolder.classList.add("secondary");
+					var rowsConEl = d.closest(view._dragItem, ".rows-con");
+					var rows = d.all(rowsConEl, ".row:not(.drag-item):not(.drag-holder)");
+					for(var i = 0; i < rows.length; i++){
+						var row = rows[i];
+						var rowOffset = app.elAbsOffset(row);
+						if(evt.pageX > rowOffset.left && evt.pageY > rowOffset.top && evt.pageX < rowOffset.left + row.clientWidth && evt.pageY < rowOffset.top + row.clientHeight){
+							if(evt.pageY > rowOffset.top + row.clientHeight / 2){
+								rowsConEl.insertBefore(view._dragHolder, row);
+								rowsConEl.insertBefore(row, view._dragHolder);
+							}else{
+								rowsConEl.insertBefore(view._dragHolder, row);
+							}
+
+							var dargNameEl = d.first(view._dragItem, ".name");
+							var holderNameEl = d.first(view._dragHolder, ".name");
+							var parentId = row.getAttribute("data-parent-id");
+							if(parentId){
+								view._dragItem.classList.add("secondary");
+								view._dragHolder.classList.add("secondary");
+							}else{
+								if(evt.pageX - rowOffset.left > 24){
+									var prevRow = d.prev(view._dragHolder, ".row:not(.secondary)");
+									if(prevRow){
+										view._dragItem.classList.add("secondary");
+										view._dragHolder.classList.add("secondary");
+									}else{
+										view._dragItem.classList.remove("secondary");
+										view._dragHolder.classList.remove("secondary");
+									}
 								}else{
 									view._dragItem.classList.remove("secondary");
 									view._dragHolder.classList.remove("secondary");
 								}
-							}else{
-								view._dragItem.classList.remove("secondary");
-								view._dragHolder.classList.remove("secondary");
 							}
+							break;
 						}
-						break;
 					}
+				// for slide valve
+				}else if(view._dragItem.classList.contains("slide-valve")){
+					var deltaX = evt.pageX - view._lastPageX + view._startValue;
+					var left = deltaX / view._currentBarWidth;
+					left = left > 1 ? 1 : left;
+					left = left < 0 ? 0 : left;
+					left = parseInt(left * 100);
+					view._dragItem.style.left = left + "%";
+
+					var slideBarEl = d.closest(view._dragItem, ".slide-bar");
+					d.first(slideBarEl, "input").value = left;
 				}
+				
 			}
 		},
 
 		"mouseup": function(evt){
 			var view = this;
 			if(view._dragItem){
-				d.remove(view._dragItem);
-				view._dragItem = null;
+				// for table rows
+				if(view._dragItem.classList.contains("row")){
+					d.remove(view._dragItem);
 
-				if(view._dragHolder.classList.contains("secondary")){
-					var parentRow = d.prev(view._dragHolder, ".row:not(.secondary)");
-					if(parentRow){
-						view._dragHolder.setAttribute("data-parent-id", parentRow.getAttribute("data-entity-id"));
+					if(view._dragHolder.classList.contains("secondary")){
+						var parentRow = d.prev(view._dragHolder, ".row:not(.secondary)");
+						if(parentRow){
+							view._dragHolder.setAttribute("data-parent-id", parentRow.getAttribute("data-entity-id"));
+						}else{
+							view._dragHolder.setAttribute("data-parent-id", "");
+						}
 					}else{
 						view._dragHolder.setAttribute("data-parent-id", "");
 					}
-				}else{
-					view._dragHolder.setAttribute("data-parent-id", "");
+
+					view._dragHolder.classList.remove("drag-holder");
+					view._dragHolder = null;
+					saveOrders.call(view);
 				}
 
-				view._dragHolder.classList.remove("drag-holder");
-				view._dragHolder = null;
-				saveOrders.call(view);
+
+				view._dragItem = null;
 			}
 		}
 	},
@@ -172,14 +267,14 @@ function refreshLists(){
 		features = features || [];
 		for(var i = 0; i < features.length; i++){
 			var item = features[i];
-			item.totalRequirementProgress = 100;
-			item.totalFunctionalProgress = 80;
+			item.totalRequirementProgress = item.totalRequirementProgress || 0;
+			item.totalFunctionalProgress = item.totalFunctionalProgress || 0;
 			var html = render("Dashboard-table-row-item", item);
 			conEl.appendChild(app.elFrom(html));
 		}
 
 		if(tableEl.classList.contains("edit-mode")){
-			d.all(conEl, "[data-prop]").forEach(function(propEl){
+			d.all(conEl, "[data-prop]:not(.progress-cell)").forEach(function(propEl){
 				propEl.setAttribute("data-editable", "");
 			});
 		}
@@ -198,3 +293,23 @@ function saveOrders(){
 	});
 	ds.get("Feature").reorderFeatures(features);
 }
+
+function setPosition(slideBarEl, value){
+	var view = this;
+	value = value * 1;
+	value = isNaN(value) ? 0 : value;
+
+	var inputEl = d.first(slideBarEl, "input");
+	var valveEl = d.first(slideBarEl, ".slide-valve");
+
+	inputEl.value = value;
+	valveEl.style.left = value + "%";
+
+}
+
+function getPropInfo(propEl){
+	var dataPropStr = propEl.getAttribute("data-prop");
+	var typeAndName = dataPropStr.split(".");
+	return {type:typeAndName[0],name:typeAndName[1]};
+}
+

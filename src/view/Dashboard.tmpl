@@ -47,21 +47,32 @@
 		<div class="cell feature" data-prop="Feature.name">
 			<span class="name">{{name}}</span>
 		</div>
-		<div class="cell requirement">
-			<div class="progress-bar {{#check totalRequirementProgress '===' 100}}done{{/check}}">
-				<div class="bar"></div>
-				<div class="txt">{{totalRequirementProgress}}%</div>
-			</div>
+		<div class="cell requirement progress-cell" data-prop="Feature.totalRequirementProgress">
+			{{{incl "Dashboard-progress-bar" totalRequirementProgress}}}
 		</div>
-		<div class="cell funcitonal">
-			<div class="progress-bar {{#check totalFunctionalProgress '===' 100}}done{{/check}}">
-				<div class="bar"></div>
-				<div class="txt">{{totalFunctionalProgress}}%</div>
-			</div>
+		<div class="cell funcitonal progress-cell" data-prop="Feature.totalFunctionalProgress">
+			{{{incl "Dashboard-progress-bar" totalFunctionalProgress}}}
 		</div>
 		<div class="cell visual" data-prop="Feature.visual">{{visual}}</div>
 		<div class="cell spec" data-prop="Feature.spec">{{spec}}</div>
 		<div class="cell api" data-prop="Feature.api">{{api}}</div>
 		<div class="cell impl" data-prop="Feature.impl">{{impl}}</div>
+	</div>
+</script>
+
+<script type="text/html" id="Dashboard-progress-bar">
+	<div class="progress-bar {{#check this '===' 100}}done{{/check}}" data-progress="{{this}}">
+		<div class="bar" style="width: {{this}}%"></div>
+		<div class="txt">{{this}}%</div>
+	</div>
+</script>
+
+<script type="text/html" id="Dashboard-slide-bar">
+	<div class="slide-bar">
+		<div class="slide-con">
+			<div class="slide-valve"></div>
+		</div>
+		<input class="slide-val" />
+		<span>%</span>
 	</div>
 </script>
