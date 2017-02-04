@@ -73,23 +73,23 @@
 				}
 			}
 			&.edit-mode{
-				.cell{
-					&:empty{
-						&:after{
-							content: "edit";
-							text-align: center;
-							display: flex;
-							flex-direction: column;
-							justify-content: center;
-							height: 100%;
-							width: 100%;
-							border-left: 1px dashed $bdr;
+				.rows-con{
+					.cell{
+						border-left: 1px dashed $bdr;
+						&:empty{
+							&:after{
+								content: "edit";
+								text-align: center;
+								display: flex;
+								flex-direction: column;
+								justify-content: center;
+								height: 100%;
+								width: 100%;
+							}
+						}
+						&:last-child{
 							border-right: 1px dashed $bdr;
 						}
-					}
-					&.progress-cell{
-						border-left: 1px dashed $bdr;
-						border-right: 1px dashed $bdr;
 					}
 				}
 			}
