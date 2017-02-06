@@ -90,6 +90,10 @@
 						&:last-child{
 							border-right: 1px dashed $bdr;
 						}
+
+						&.action-col{
+							display: flex;
+						}
 					}
 				}
 			}
@@ -130,6 +134,26 @@
 					display: none;
 					width: 32px;
 					justify-content: flex-start;
+				}
+				&.action-col{
+					display: none;
+					width: 32px;
+					justify-content: flex-start;
+					.btn-delete{
+						width: 16px;
+						height: 16px;
+						border-radius: 16px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						cursor: pointer;
+						&:hover{
+							background: $bkg-darkest;
+							.svg-icon{
+								fill: white;
+							}
+						}
+					}
 				}
 				&.feature{
 					justify-content: flex-start;

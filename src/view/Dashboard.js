@@ -124,6 +124,12 @@ d.register("Dashboard",{
 			d.empty(cellEl);
 			cellEl.appendChild(slideBarEl);
 			cellEl.classList.add("init-slide-cell");
+		},
+
+		"click; .btn-delete": function(evt){
+			var view = this;
+			var entityInfo = utils.entityRef(evt.target);
+			ds.get(entityInfo.type).remove(entityInfo.id);
 		}
 	}, 
 
